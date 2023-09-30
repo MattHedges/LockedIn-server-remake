@@ -1,0 +1,10 @@
+[
+    {
+        "model": "lockedinapi.routine",
+        "pk": 1,
+        "fields": {
+            "name": "Chest",
+            "user": 1
+        }
+    }
+]
