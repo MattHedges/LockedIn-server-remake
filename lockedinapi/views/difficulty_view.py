@@ -4,7 +4,18 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 
+class DifficultyView(ViewSet):
 
+    def retrieve(self, request, pk):
+        difficulty = Difficulty.objects.get(pk=pk)
+        serializer = DifficultySerializer(difficulty)
+        return Response(serialdiffizer.data, status=status.HTTP_200_OK)
+
+
+    def list(self, request):
+        difficulty = Difficulty.objects.all()
+        serializer = DifficultySerializer(difficulty, many=True)
+        return Response(serializer.data)
 
 
 
