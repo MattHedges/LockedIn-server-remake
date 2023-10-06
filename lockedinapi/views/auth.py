@@ -5,8 +5,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from levelupapi.models import Gamer
-
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login_user(request):
@@ -27,7 +25,8 @@ def login_user(request):
         token = Token.objects.get(user=authenticated_user)
         data = {
             'valid': True,
-            'token': token.key
+            'token': token.key,
+            'user': token.user.id
         }
         return Response(data)
     else:
@@ -50,17 +49,12 @@ def register_user(request):
         username=request.data['username'],
         password=request.data['password'],
         first_name=request.data['first_name'],
-        last_name=request.data['last_name']
-    )
-
-    # Now save the extra info in the levelupapi_gamer table
-    gamer = Gamer.objects.create(
-        bio=request.data['bio'],
-        user=new_user
+        last_name=request.data['last_name'],
+        email=request.data['email']
     )
 
     # Use the REST Framework's token generator on the new user account
-    token = Token.objects.create(user=gamer.user)
+    token = Token.objects.create(new_user.user)
     # Return the token to the client
     data = { 'token': token.key }
     return Response(data)

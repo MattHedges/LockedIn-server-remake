@@ -9,7 +9,7 @@ class DifficultyView(ViewSet):
     def retrieve(self, request, pk):
         difficulty = Difficulty.objects.get(pk=pk)
         serializer = DifficultySerializer(difficulty)
-        return Response(serialdiffizer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
     def list(self, request):
