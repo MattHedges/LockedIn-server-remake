@@ -13,7 +13,10 @@ class EquipmentView(ViewSet):
         serializer = EquipmentSerializer(equipment)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
+    def list(self, request):
+        equipment = Equipment.objects.all()
+        serializer = EquipmentSerializer(equipment, many=True)
+        return Response(serializer.data)
 
 
 class EquipmentSerializer(serializers.ModelSerializer):
