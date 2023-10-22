@@ -64,6 +64,11 @@ class ExerciseView(ViewSet):
             exercises = Exercise.objects.all()
         serializer = ExerciseSerializer(exercises, many=True)
         return Response(serializer.data)
+    
+    def destroy(self, request, pk):
+        exercise = Exercise.objects.get(pk=pk)
+        exercise.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 class ExerciseSerializer(serializers.ModelSerializer):
     """JSON serializer for exercise
