@@ -33,6 +33,25 @@ class ExerciseView(ViewSet):
         )
         serializer = ExerciseSerializer(exercise)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    def update(self, request, pk):
+        difficulty = Difficulty.objects.get(pk=request.data["difficulty"])
+        muscleGroup = MuscleGroup.objects.get(pk=request.data["muscleGroup"])
+        equipment = Equipment.objects.get(pk=request.data["equipment"])
+
+        exercise = Exercise.objects.get(pk=pk)
+        exercise.name = request.data["name"]
+        exercise.description1 = request.data["description1"]
+        exercise.description2 = request.data["description2"]
+        exercise.description3 = request.data["description3"]
+        exercise.description4 = request.data["description4"]
+        difficulty = difficulty
+        muscleGroup = muscleGroup
+        equipment = equipment
+        exercise.video = request.data["video"]
+        exercise.save()
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 class ExerciseSerializer(serializers.ModelSerializer):
     """JSON serializer for exercise
