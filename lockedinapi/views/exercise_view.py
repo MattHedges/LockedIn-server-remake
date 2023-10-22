@@ -13,6 +13,26 @@ class ExerciseView(ViewSet):
         exercise = Exercise.objects.get(pk=pk)
         serializer = ExerciseSerializer(exercise)
         return Response(serializer.data)
+    
+    def create(self, request):
+
+        difficulty = Difficulty.objects.get(pk=request.data["difficulty"])
+        muscleGroup = MuscleGroup.objects.get(pk=request.data["muscleGroup"])
+        equipment = Equipment.objects.get(pk=request.data["equipment"])
+
+        exercise = Exercise.objects.create(
+        name=request.data["name"],
+        description1=request.data["description1"],
+        description2=request.data["description2"],
+        description3=request.data["description3"],
+        description4=request.data["description4"],
+        difficulty=difficulty,
+        muscleGroup = muscleGroup,
+        equipment = equipment,
+        video = request.data["video"]
+        )
+        serializer = ExerciseSerializer(exercise)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class ExerciseSerializer(serializers.ModelSerializer):
     """JSON serializer for exercise
