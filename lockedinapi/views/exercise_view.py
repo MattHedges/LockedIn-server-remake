@@ -52,6 +52,18 @@ class ExerciseView(ViewSet):
         exercise.save()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
+    
+    def list(self, request):
+        query_params = request.query_params.dict()
+
+        if 'muscleGroup' in query_params:
+            exercises = Exercise.objects.filter(muscleGroup=query_params['muscleGroup'])
+        elif 'equipment' in query_params:
+            exercises = Exercise.objects.filter(equipment=query_params['equipment'])
+        else:
+            exercises = Exercise.objects.all()
+        serializer = ExerciseSerializer(exercises, many=True)
+        return Response(serializer.data)
 
 class ExerciseSerializer(serializers.ModelSerializer):
     """JSON serializer for exercise
